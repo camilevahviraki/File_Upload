@@ -2,6 +2,7 @@
 import {useState} from 'react';
 import './App.css';
 import axios from 'axios';
+import { Player } from "video-react";
 
 function App() {
   const [gallery, setGallery] = useState({});
@@ -11,17 +12,18 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // ///////////////////////////////////////// Upload the files
-    // axios.post('URL', {
-    //   files: e.target.gallery.files,
-    // }, 
-    // {
-    //   headers: {
-    //     'Content-Type': 'multipart/form-data',
-    //   },
-    // } ).then(response => console.log(response));
-    // ////////////////////////////////////////// Upload the files
+    const chosenFiles = Array.prototype.slice.call(e.target.gallery.files)
+    ///////////////////////////////////////// Upload the files
+    console.log(chosenFiles)
+    axios.post("http://localhost:3001/upload-images", {
+      files: chosenFiles,
+    }, 
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    } ).then(response => console.log(response));
+    ////////////////////////////////////////// Upload the files
   }
 
   const handleSelect = (e) => {
@@ -35,12 +37,13 @@ function App() {
       setMultiple(true);
      }else if(choosen === 'Video'){
       setFileType('video');
-      setMultiple(false);
+      setMultiple(true);
      }
   }
 
   const handlePreview = (e) => {
      setGallery(e.target.files);
+     console.log(e.target.files);
   }
 
   return (
